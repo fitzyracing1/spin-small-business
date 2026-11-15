@@ -6,7 +6,16 @@
 
 Summarize a bookkeeping CSV by category and estimate quarterly tax from a rate you supply. Same input, same answer, no API, no cost, works offline.
 
-The bookkeeper ships in a pull request. You supply the tax rate. It is a math helper, not tax advice.
+You supply the tax rate. It is a math helper, not tax advice. It does not apply deductions, credits, annualization, or filing rules.
+
+```sh
+python small_business.py summarize testdata/books.csv
+python small_business.py tax testdata/books.csv --rate 25%
+```
+
+CSV columns: `date,description,category,amount,type`. Dates are `YYYY-MM-DD`. Amounts are unsigned; `type` is `income` or `expense`. Totals use `Decimal` math, rounded half-up to cents.
+
+The tax helper prints two views: each calendar quarter's net times your rate (a negative quarter estimates 0 for that quarter), and four equal installments of (yearly net * rate), where losses offset gains across the year.
 
 ## Run it
 
